@@ -1,132 +1,56 @@
-<!DOCTYPE html><html lang="ar" dir="rtl">
+from pathlib import Path
+
+html = """<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JINIX</title><style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080b18">
+<title>JINIX ROBUX — Demo</title>
+<style>
+:root{--bg:#080b18;--panel:#11172b;--text:#f4f7ff;--muted:#a7b1cc;--blue:#42d9ff;--purple:#9b6cff;--green:#59f2ad;--border:rgba(151,170,255,.18)}
+*{box-sizing:border-box}body{margin:0;color:var(--text);font-family:system-ui,Arial,sans-serif;background:radial-gradient(circle at 10% 0%,#30265c 0,transparent 35%),radial-gradient(circle at 100% 20%,#063b50 0,transparent 30%),var(--bg);min-height:100vh}
+button,input{font:inherit}button{cursor:pointer}.wrap{width:min(100% - 28px,1000px);margin:auto;padding:20px 0 48px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border:1px solid var(--border);border-radius:20px;background:#11172be8;position:sticky;top:6px;z-index:2}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.6px}.logo{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--blue),var(--purple));color:#080b18;font-size:22px;font-weight:1000}
+.badge,.pill{border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800}.badge{color:var(--green);border:1px solid #59f2ad55;background:#59f2ad12}
+.hero{text-align:center;padding:46px 8px 24px}.eyebrow{color:var(--blue);text-transform:uppercase;font-size:12px;font-weight:900;letter-spacing:2px}h1{font-size:clamp(34px,8vw,62px);line-height:1.05;letter-spacing:-1.8px;margin:10px 0}h1 span{background:linear-gradient(90deg,var(--blue),#bba0ff);color:transparent;background-clip:text}.hero p{max-width:620px;margin:14px auto;color:var(--muted);line-height:1.65}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}.card{grid-column:span 6;padding:20px;border-radius:20px;border:1px solid var(--border);background:linear-gradient(145deg,#171f39f5,#0e1325f5)}.wide{grid-column:span 12}
+h2{margin:0 0 12px;font-size:20px}h3{margin:0 0 8px;font-size:16px}.muted{color:var(--muted);line-height:1.55;font-size:14px}.small{font-size:12px;color:var(--muted)}.points{font-size:38px;font-weight:950}.points small{font-size:14px;color:var(--muted)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.between{justify-content:space-between}.btn{border:0;border-radius:12px;padding:12px 16px;font-weight:850;color:#06101c;background:linear-gradient(90deg,var(--blue),#9cbcff);min-height:44px}.btn:disabled{opacity:.5;cursor:not-allowed}.secondary{color:var(--text);background:#171f39;border:1px solid var(--border)}.purple{color:white;background:linear-gradient(90deg,#7854e8,#b26cff)}.green{background:linear-gradient(90deg,#4de5a0,#a4ffd2)}
+input{width:100%;min-height:46px;padding:12px 14px;color:var(--text);border-radius:12px;border:1px solid var(--border);background:#090e1e;outline:none}label{display:block;margin:12px 0 7px;color:var(--muted);font-size:13px;font-weight:750}
+.progress{height:9px;border-radius:99px;overflow:hidden;background:#080d1b;margin:12px 0}.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--purple))}
+.task{padding:14px 0;border-bottom:1px solid var(--border)}.task:last-of-type{border-bottom:0}.pill{display:inline-block;background:#9b6cff22;color:#d6c5ff}.notice{border-left:3px solid #ffcc66;padding:10px 12px;color:#e8d6a9;background:#ffcc660c;border-radius:8px;font-size:12px;line-height:1.55}.status{margin-top:12px;min-height:20px;font-size:13px;color:var(--green)}.history{padding-left:18px;color:var(--muted);font-size:13px;line-height:1.8;overflow-wrap:anywhere}.ad-box{text-align:center;padding:24px 14px;border:1px dashed #42d9ff55;border-radius:16px;background:#42d9ff0a}
+footer{text-align:center;color:var(--muted);font-size:12px;line-height:1.7;padding:28px 8px 0}
+@media(max-width:700px){.card{grid-column:span 12;padding:17px}.hero{padding-top:36px}header{padding:10px 12px}}
+</style>
+</head>
+<body><div class="wrap">
+<header><div class="brand"><div class="logo">J</div><div>JINIX <span style="color:var(--blue)">ROBUX</span><div class="small">REWARDS HUB</div></div></div><div class="badge">DEMO MODE</div></header>
+<section class="hero"><div class="eyebrow">Play • Collect • Explore</div><h1>Welcome to <span>JINIX ROBUX</span></h1><p>Complete demo challenges and collect points. This is a sample website only: it does not serve real ads, send Robux, or contact Roblox.</p></section>
+<main class="grid">
+<section class="card"><h2>Your points</h2><div class="points"><span id="points">0</span> <small>POINTS</small></div><div class="progress"><div id="progressBar"></div></div><div class="row between"><span class="muted" id="progressText">100 points to reach the demo request threshold.</span><button class="btn secondary" id="resetBtn">Reset demo</button></div></section>
+<section class="card"><h2>Player profile</h2><p class="muted">Enter your Roblox username for this demo. Never enter your Roblox password or account cookie.</p><label for="username">Roblox username</label><input id="username" maxlength="20" autocomplete="off" placeholder="Your Roblox username"><div class="row" style="margin-top:12px"><button class="btn" id="saveUsername">Save username</button><span class="small" id="profileStatus"></span></div></section>
+<section class="card wide"><div class="row between"><h2>Daily challenges</h2><span class="pill">DEMO POINTS</span></div>
+<div class="task row between"><div><h3>Welcome challenge</h3><div class="muted">Claim once on this device.</div></div><button class="btn green" id="welcomeBtn">Claim +10</button></div>
+<div class="task row between"><div><h3>Explore JINIX</h3><div class="muted">Try the demo challenge.</div></div><button class="btn purple" id="exploreBtn">Complete +15</button></div>
+<div class="task row between"><div><h3>Ad preview</h3><div class="muted">A simulated ad experience, not a real advertisement.</div></div><button class="btn secondary" id="adBtn">Start demo</button></div><div class="status" id="challengeStatus"></div></section>
+<section class="card"><h2>Reward request (demo)</h2><p class="muted">The demo request threshold is 100 points. Requests are saved only in this browser and are not sent to anyone.</p><div class="notice">This page cannot grant Robux. Do not promise rewards until you have an approved process and have checked the relevant platform and advertising rules.</div><label for="rewardAmount">Requested Robux amount</label><input id="rewardAmount" type="number" min="100" step="1" value="100"><button class="btn" id="requestBtn" style="width:100%;margin-top:12px">Create demo request</button><div class="status" id="requestStatus"></div></section>
+<section class="card"><h2>Request history</h2><p class="muted">Stored locally on this device only.</p><ul class="history" id="history"><li>No requests yet.</li></ul></section>
+<section class="card wide"><div class="ad-box"><div class="eyebrow">Ad space preview</div><h2 style="margin-top:8px">Your ad area</h2><p class="muted">Real advertisements require a properly configured, approved ad account and website. This box is only a visual placeholder.</p><span class="pill">NO REAL AD SHOWN</span></div></section>
+</main><footer><strong>JINIX ROBUX — Demonstration website</strong><br>Independent fan-made demo; not affiliated with Roblox Corporation.<br>Points, challenges, ad preview, and reward requests are simulated and stored locally. No real Robux are issued.</footer>
+</div>
+<script>
+(()=>{const KEY="jinixRobuxDemo_v1",base={points:0,username:"",welcomeClaimed:false,exploreClaimed:false,adClaimed:false,requests:[]};let s;try{s={...base,...JSON.parse(localStorage.getItem(KEY)||"{}")};if(!Array.isArray(s.requests))s.requests=[]}catch(e){s={...base}}const $=id=>document.getElementById(id);const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}render()};const add=n=>{s.points=Math.max(0,Number(s.points)||0)+n;save()};const esc=x=>String(x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function render(){$("points").textContent=s.points;$("username").value=s.username||"";$("welcomeBtn").disabled=s.welcomeClaimed;$("welcomeBtn").textContent=s.welcomeClaimed?"Claimed":"Claim +10";$("exploreBtn").disabled=s.exploreClaimed;$("exploreBtn").textContent=s.exploreClaimed?"Completed":"Complete +15";$("adBtn").disabled=s.adClaimed;$("adBtn").textContent=s.adClaimed?"Demo used":"Start demo";$("progressBar").style.width=Math.min(100,s.points)+"%";$("progressText").textContent=s.points>=100?"Demo threshold reached. You can create a local demo request.":`${100-s.points} more points to reach the demo request threshold.`;$("history").innerHTML=s.requests.length?s.requests.slice().reverse().map(r=>`<li>${esc(r.date)} — ${esc(r.amount)} Robux requested — DEMO ONLY</li>`).join(""):"<li>No requests yet.</li>"}
+$("saveUsername").onclick=()=>{let u=$("username").value.trim();if(!u){$("profileStatus").textContent="Enter a username first.";return}if(!/^[A-Za-z0-9_]{3,20}$/.test(u)){$("profileStatus").textContent="Use 3–20 letters, numbers, or underscores.";return}s.username=u;save();$("profileStatus").textContent="Saved on this device."};
+$("welcomeBtn").onclick=()=>{if(s.welcomeClaimed)return;s.welcomeClaimed=true;add(10);$("challengeStatus").textContent="Welcome challenge completed: +10 demo points."};
+$("exploreBtn").onclick=()=>{if(s.exploreClaimed)return;s.exploreClaimed=true;add(15);$("challengeStatus").textContent="Explore challenge completed: +15 demo points."};
+$("adBtn").onclick=()=>{if(s.adClaimed)return;s.adClaimed=true;add(5);$("challengeStatus").textContent="Simulated ad preview completed: +5 demo points. No real ad was shown."};
+$("requestBtn").onclick=()=>{$("requestStatus").textContent="";let amount=Number($("rewardAmount").value);if(!s.username){$("requestStatus").textContent="Save your Roblox username first.";return}if(!Number.isInteger(amount)||amount<100){$("requestStatus").textContent="The demo minimum request is 100 Robux.";return}if(s.points<100){$("requestStatus").textContent="You need at least 100 demo points to create a request.";return}s.requests.push({amount,date:new Date().toLocaleString(),username:s.username,status:"DEMO ONLY"});s.points-=100;save();$("requestStatus").textContent="Demo request created on this device only. No Robux will be sent."};
+$("resetBtn").onclick=()=>{if(!confirm("Reset all JINIX ROBUX demo data on this device?"))return;s={...base,requests:[]};try{localStorage.removeItem(KEY)}catch(e){}$("profileStatus").textContent="";$("challengeStatus").textContent="";$("requestStatus").textContent="";render()};render()})();
+</script></body></html>"""
 
-body {
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
-    background: #080b16;
-    color: white;
-    display: flex;
-    flex-direction: column;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background: #101528;
-    border-bottom: 1px solid #26314c;
-}
-
-.logo {
-    font-size: 28px;
-    font-weight: bold;
-    color: #00d9ff;
-    letter-spacing: 3px;
-}
-
-.menu {
-    font-size: 25px;
-    color: #00d9ff;
-}
-
-main {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 25px;
-}
-
-.card {
-    width: 100%;
-    max-width: 430px;
-    text-align: center;
-    padding: 40px 25px;
-    background: linear-gradient(145deg, #151d35, #101426);
-    border: 1px solid #263d65;
-    border-radius: 24px;
-    box-shadow: 0 0 35px rgba(0, 217, 255, 0.12);
-}
-
-.icon {
-    font-size: 55px;
-    margin-bottom: 20px;
-}
-
-h1 {
-    font-size: 38px;
-    color: #00d9ff;
-    margin-bottom: 15px;
-}
-
-.description {
-    font-size: 18px;
-    line-height: 1.8;
-    color: #c4cce0;
-    margin-bottom: 28px;
-}
-
-button {
-    width: 100%;
-    padding: 15px;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(90deg, #00d9ff, #537bff);
-    color: #07101e;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-button:active {
-    transform: scale(0.97);
-}
-
-#message {
-    margin-top: 22px;
-    color: #00e6a8;
-    font-size: 18px;
-    line-height: 1.7;
-}
-
-footer {
-    padding: 20px;
-    text-align: center;
-    color: #7f8ba8;
-    font-size: 13px;
-}
-</style></head><body><header>
-    <div class="logo">JINIX</div>
-    <div class="menu">☰</div>
-</header><main>
-    <section class="card">
-        <div class="icon">🌐</div>
-        <h1>مرحبا بك!</h1>    <p class="description">
-        مرحباً بك في JINIX<br>
-        اكتشف عالماً جديداً من الإبداع.
-    </p>
-
-    <button onclick="welcome()">دخول الموقع</button>
-
-    <p id="message"></p>
-</section>
-
-</main><footer>
-    © 2026 JINIX — جميع الحقوق محفوظة
-</footer><script>
-function welcome() {
-    document.getElementById("message").textContent =
-        "أهلاً وسهلاً بك في JINIX! نتمنى لك تجربة ممتعة.";
-}
-</script></body>
-</html>
+p = Path("/mnt/data/jinix_robux_demo.html")
+p.write_text(html, encoding="utf-8")
+print(f"تم إنشاء الملف: {p.name} — الحجم: {len(html):,} حرف")
